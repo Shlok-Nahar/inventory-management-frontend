@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { Customer } from '../../../models/customer.interface';
+import { Customer } from '../../models/customer.interface';
 
 @Component({
   selector: 'app-customers-table',
   template: `
-    <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] group/design-root overflow-x-hidden">
+    <div class="relative flex h-screen flex-col bg-[#FFFFFF] group/design-root overflow-hidden">
       <div class="layout-container flex h-full grow flex-col">
         <div class="px-40 flex flex-1 justify-center py-5">
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
@@ -19,9 +19,9 @@ import { Customer } from '../../../models/customer.interface';
                     </tr>
                   </thead>
                   <tbody>
-                    @for (customer of customers(); track customer.customerId) {
+                    @for (customer of customers(); track customer.customerID) {
                       <tr class="border-t border-t-[#E9DFCE]">
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{customer.customerId}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{customer.customerID}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{customer.customerName}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{customer.contactInfo}}</td>
                       </tr>
@@ -38,6 +38,5 @@ import { Customer } from '../../../models/customer.interface';
 })
 
 export class CustomerTableComponent {
-  customers = signal<Customer[]>([
-  ]);
+  customers = signal<Customer[]>([]);
 }
