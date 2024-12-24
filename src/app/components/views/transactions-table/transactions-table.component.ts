@@ -1,8 +1,11 @@
+//TODO: Implement the transactions-table such that it can link with the right product, supplier, and customer
+
+
 import { Component, signal } from '@angular/core';
-import { Product } from '../../models/product.interface';
+import { Product } from '../../../models/product.interface';
 
 @Component({
-  selector: 'app-products-table',
+  selector: 'app-transactions-table',
   template: `
     <div class="relative flex size-full min-h-screen flex-col bg-[#FFFFFF] group/design-root overflow-x-hidden">
       <div class="layout-container flex h-full grow flex-col">
@@ -13,21 +16,23 @@ import { Product } from '../../models/product.interface';
                 <table class="flex-1">
                   <thead>
                     <tr class="bg-[#FFFFFF]">
-                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">ProductID</th>
-                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">Name</th>
-                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">Stock</th>
-                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">CustomerID</th>
+                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">TransactionID</th>
+                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">Product Name</th>
                       <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">SupplierID</th>
+                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">CustomerID</th>
+                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">Price</th>
+                      <th class="px-4 py-3 text-left text-[#1C160C] w-[400px] text-sm font-medium">Stock</th>
                     </tr>
                   </thead>
                   <tbody>
                     @for (product of products(); track product.productId) {
                       <tr class="border-t border-t-[#E9DFCE]">
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.productId}}</td>
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.name}}</td>
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#A18249] text-sm">{{product.stock}}</td>
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.customerId}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.productName}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.supplierId}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.customerId}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#846224] text-sm">{{product.price}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#846224] text-sm">{{product.stock}}</td>
                       </tr>
                     }
                   </tbody>
@@ -41,12 +46,7 @@ import { Product } from '../../models/product.interface';
   `
 })
 
-export class ProductTableComponent {
+export class TransactionTableComponent {
   products = signal<Product[]>([
-    { productId: 101, name: 'Laptop', stock: 25, customerId: 'C123', supplierId: 'S456' },
-    { productId: 102, name: 'Monitor', stock: 50, customerId: '', supplierId: 'S012' },
-    { productId: 103, name: 'Keyboard', stock: 100, customerId: 'C345', supplierId: 'S678' },
-    { productId: 104, name: 'Mouse', stock: 75, customerId: 'C901', supplierId: '' },
-    { productId: 105, name: 'Printer', stock: 30, customerId: 'C567', supplierId: 'S890' }
   ]);
 }

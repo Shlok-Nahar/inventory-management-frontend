@@ -1,8 +1,9 @@
 export interface Product {
-    productId: number;
-    name: string;
-    stock: number;
-    customerId: string;
-    supplierId: string;
+    productID: number;
+    productName: string;
+    supplierID?: string;
+    customerID?: string;
+    price?: number;
+    stock?: number;
   }
   
