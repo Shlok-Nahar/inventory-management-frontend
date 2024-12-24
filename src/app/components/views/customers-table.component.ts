@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Customer } from '../../models/customer.interface';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-customers-table',
@@ -39,4 +40,13 @@ import { Customer } from '../../models/customer.interface';
 
 export class CustomerTableComponent {
   customers = signal<Customer[]>([]);
+
+  constructor(private readonly customerService: CustomerService) {}
+
+  ngOnInit() {
+    this.customerService.getCustomers().subscribe({
+      next: (data) => this.customers.set(data),
+      error: (error) => console.error('Error fetching customers:', error)
+    });
+  }
 }

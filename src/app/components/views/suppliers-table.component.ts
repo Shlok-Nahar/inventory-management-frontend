@@ -40,4 +40,13 @@ import { SupplierService } from '../../services/supplier.service';
 
 export class SupplierTableComponent {
   suppliers = signal<Supplier[]>([]);
+
+  constructor(private readonly supplierService: SupplierService) {}
+
+  ngOnInit() {
+    this.supplierService.getSuppliers().subscribe({
+      next: (data) => this.suppliers.set(data),
+      error: (error) => console.error('Error fetching suppliers:', error)
+    });
+  }
 }
