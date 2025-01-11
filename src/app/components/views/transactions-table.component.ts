@@ -12,7 +12,7 @@ import { ProductService } from '../../services/product.service';
     <div class="relative flex h-screen flex-col bg-[#FFFFFF] group/design-root overflow-hidden">
       <div class="layout-container flex h-full grow flex-col">
         <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
             <div class="px-4 py-3 @container">
               <div class="flex overflow-hidden rounded-xl border border-[#E9DFCE] bg-[#FFFFFF]">
                 <table class="flex-1">

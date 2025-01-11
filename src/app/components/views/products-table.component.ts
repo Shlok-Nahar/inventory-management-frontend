@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { EditProductModalComponent } from '../modals/edit-product-modal.component';
 import { DeleteConfirmationDialogComponent } from '../modals/delete-product-confirmation-dialog.component';
 import { CreateProductModalComponent } from '../modals/create-product-modal.component';
+import { SupplierService } from '../../services/supplier.service';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-products-table',
@@ -19,7 +21,7 @@ import { CreateProductModalComponent } from '../modals/create-product-modal.comp
     <div class="relative flex h-screen flex-col bg-[#FFFFFF] group/design-root overflow-x-hidden">
       <div class="layout-container flex h-full grow flex-col">
         <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
             <div class="px-4 py-3 @container">
               <div class="flex overflow-hidden rounded-xl border border-[#E9DFCE] bg-[#FFFFFF]">
                 <table class="flex-1">
@@ -56,8 +58,12 @@ import { CreateProductModalComponent } from '../modals/create-product-modal.comp
                       <tr class="border-t border-t-[#E9DFCE]">
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.productID}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.productName}}</td>
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.supplierID}}</td>
-                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">{{product.customerID}}</td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">
+                          {{product.supplierID ? suppliers().get(product.supplierID) : '-'}}
+                        </td>
+                        <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm">
+                          {{product.customerID ? customers().get(product.customerID) : '-'}}
+                        </td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#846224] text-sm">{{product.price}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#846224] text-sm">{{product.stock}}</td>
                         <td class="h-[72px] px-4 py-2 w-[400px] text-[#1C160C] text-sm text-center">
@@ -117,21 +123,51 @@ import { CreateProductModalComponent } from '../modals/create-product-modal.comp
 
 export class ProductTableComponent {
   products = signal<Product[]>([]);
+  suppliers = signal<Map<number, string>>(new Map());
+  customers = signal<Map<number, string>>(new Map());
   isManageMode = signal<boolean>(false);
   selectedProduct = signal<Product | null>(null);
   productToDelete = signal<Product | null>(null);
   showCreateModal = signal<boolean>(false);
 
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService,
+    private readonly supplierService: SupplierService,
+    private readonly customerService: CustomerService) {}
 
   ngOnInit() {
       this.loadProducts();
+      this.loadSuppliers();
+      this.loadCustomers();
     }
   
     loadProducts() {
       this.productService.getProducts().subscribe({
         next: (data) => this.products.set(data),
         error: (error) => console.error('Error fetching products:', error)
+      });
+    }
+
+    loadSuppliers() {
+      this.supplierService.getSuppliers().subscribe({
+        next: (suppliers) => {
+          const supplierMap = new Map(
+            suppliers.map(s => [s.supplierID, s.supplierName])
+          );
+          this.suppliers.set(supplierMap);
+        },
+        error: (error) => console.error('Error fetching suppliers:', error)
+      });
+    }
+  
+    loadCustomers() {
+      this.customerService.getCustomers().subscribe({
+        next: (customers) => {
+          const customerMap = new Map(
+            customers.map(c => [c.customerID, c.customerName])
+          );
+          this.customers.set(customerMap);
+        },
+        error: (error) => console.error('Error fetching customers:', error)
       });
     }
   
