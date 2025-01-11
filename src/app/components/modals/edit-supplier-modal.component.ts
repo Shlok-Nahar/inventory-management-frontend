@@ -1,25 +1,25 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Customer } from '../../models/customer.interface';
+import { Supplier } from '../../models/supplier.interface';
 
 @Component({
-  selector: 'app-create-customer-modal',
+  selector: 'app-edit-supplier-modal',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
       <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
-          <h3 class="text-lg font-medium text-[#1C160C]">Add New Customer</h3>
+          <h3 class="text-lg font-medium text-[#1C160C]">Edit Supplier</h3>
           <div class="mt-2 px-7 py-3">
             <form>
               <div class="mb-4">
-                <label class="block text-sm font-medium text-[#1C160C] mb-2">Customer Name</label>
+                <label class="block text-sm font-medium text-[#1C160C] mb-2">Supplier Name</label>
                 <input 
                   type="text" 
-                  [(ngModel)]="newCustomer.customerName"
-                  name="customerName"
+                  [(ngModel)]="editedSupplier.supplierName"
+                  name="supplierName"
                   class="w-full px-3 py-2 border border-[#E9DFCE] rounded-md focus:outline-none focus:border-[#1C160C]"
                 />
               </div>
@@ -27,7 +27,7 @@ import { Customer } from '../../models/customer.interface';
                 <label class="block text-sm font-medium text-[#1C160C] mb-2">Contact Info</label>
                 <input 
                   type="text" 
-                  [(ngModel)]="newCustomer.contactInfo"
+                  [(ngModel)]="editedSupplier.contactInfo"
                   name="contactInfo"
                   class="w-full px-3 py-2 border border-[#E9DFCE] rounded-md focus:outline-none focus:border-[#1C160C]"
                 />
@@ -44,7 +44,6 @@ import { Customer } from '../../models/customer.interface';
             <button 
               class="bg-[#1C160C] text-white hover:bg-[#E9DFCE] hover:text-[#1C160C] font-bold py-2 px-4 rounded"
               (click)="onSave()"
-              [disabled]="!isValid()"
             >
               Save
             </button>
@@ -54,26 +53,23 @@ import { Customer } from '../../models/customer.interface';
     </div>
   `
 })
-export class CreateCustomerModalComponent {
-  @Output() save = new EventEmitter<Omit<Customer, 'customerID'>>();
+export class EditSupplierModalComponent {
+  @Input() supplier!: Supplier;
+  @Output() save = new EventEmitter<Supplier>();
   @Output() cancel = new EventEmitter<void>();
 
-  newCustomer: Omit<Customer, 'customerID'> = {
-    customerName: '',
+  editedSupplier: Supplier = {
+    supplierID: 0,
+    supplierName: '',
     contactInfo: ''
   };
 
-  isValid(): boolean {
-    return Boolean(this.newCustomer?.customerName?.trim()); // Only check for customer name
+  ngOnInit() {
+    this.editedSupplier = { ...this.supplier };
   }
 
   onSave() {
-    if (this.isValid()) {
-      this.save.emit({
-        customerName: this.newCustomer.customerName.trim(),
-        contactInfo: this.newCustomer.contactInfo?.trim() ?? '' // Handle empty contact info
-      });
-    }
+    this.save.emit(this.editedSupplier);
   }
 
   onCancel() {

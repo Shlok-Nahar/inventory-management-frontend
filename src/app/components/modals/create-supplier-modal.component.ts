@@ -1,25 +1,25 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Customer } from '../../models/customer.interface';
+import { Supplier } from '../../models/supplier.interface';
 
 @Component({
-  selector: 'app-create-customer-modal',
+  selector: 'app-create-supplier-modal',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
     <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
       <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
-          <h3 class="text-lg font-medium text-[#1C160C]">Add New Customer</h3>
+          <h3 class="text-lg font-medium text-[#1C160C]">Add New Supplier</h3>
           <div class="mt-2 px-7 py-3">
             <form>
               <div class="mb-4">
-                <label class="block text-sm font-medium text-[#1C160C] mb-2">Customer Name</label>
+                <label class="block text-sm font-medium text-[#1C160C] mb-2">Supplier Name</label>
                 <input 
                   type="text" 
-                  [(ngModel)]="newCustomer.customerName"
-                  name="customerName"
+                  [(ngModel)]="newSupplier.supplierName"
+                  name="supplierName"
                   class="w-full px-3 py-2 border border-[#E9DFCE] rounded-md focus:outline-none focus:border-[#1C160C]"
                 />
               </div>
@@ -27,7 +27,7 @@ import { Customer } from '../../models/customer.interface';
                 <label class="block text-sm font-medium text-[#1C160C] mb-2">Contact Info</label>
                 <input 
                   type="text" 
-                  [(ngModel)]="newCustomer.contactInfo"
+                  [(ngModel)]="newSupplier.contactInfo"
                   name="contactInfo"
                   class="w-full px-3 py-2 border border-[#E9DFCE] rounded-md focus:outline-none focus:border-[#1C160C]"
                 />
@@ -54,24 +54,24 @@ import { Customer } from '../../models/customer.interface';
     </div>
   `
 })
-export class CreateCustomerModalComponent {
-  @Output() save = new EventEmitter<Omit<Customer, 'customerID'>>();
+export class CreateSupplierModalComponent {
+  @Output() save = new EventEmitter<Omit<Supplier, 'supplierID'>>();
   @Output() cancel = new EventEmitter<void>();
 
-  newCustomer: Omit<Customer, 'customerID'> = {
-    customerName: '',
+  newSupplier: Omit<Supplier, 'supplierID'> = {
+    supplierName: '',
     contactInfo: ''
   };
 
   isValid(): boolean {
-    return Boolean(this.newCustomer?.customerName?.trim()); // Only check for customer name
+    return Boolean(this.newSupplier?.supplierName?.trim()); // Only check for supplier name
   }
 
   onSave() {
     if (this.isValid()) {
       this.save.emit({
-        customerName: this.newCustomer.customerName.trim(),
-        contactInfo: this.newCustomer.contactInfo?.trim() ?? '' // Handle empty contact info
+        supplierName: this.newSupplier.supplierName.trim(),
+        contactInfo: this.newSupplier.contactInfo?.trim() ?? '' // Handle empty contact info
       });
     }
   }
